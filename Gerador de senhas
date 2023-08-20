@@ -1,0 +1,35 @@
+using System;
+using System.Security.Cryptography;
+
+namespace GeradorDeSenhas
+{
+    class Program
+    {
+        static string GerarSenhaAleatoria(int comprimento)
+        {
+            const string caracteresValidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;:,.<>?";
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] bytesAleatorios = new byte[comprimento];
+                rng.GetBytes(bytesAleatorios);
+
+                string senha = "";
+                foreach (byte b in bytesAleatorios)
+                {
+                    senha += caracteresValidos[b % caracteresValidos.Length];
+                }
+                return senha;
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.Write("Informe o comprimento da senha desejada: ");
+            int comprimentoSenha = int.Parse(Console.ReadLine());
+
+            string senhaGerada = GerarSenhaAleatoria(comprimentoSenha);
+
+            Console.WriteLine("Senha gerada: " + senhaGerada);
+        }
+    }
+}
